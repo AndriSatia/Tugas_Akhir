@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter dan Waktu Mundur</title>
+  <link rel="stylesheet" href="home.css"> <!-- Hubungkan file CSS -->
+  <style>
+    /* Move the styles here if you don't want to use an external CSS file */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      background-image: url('gym3.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin-top: 20px;
+      background-color: rgba(92, 131, 116, 0.9);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: rgba(27, 66, 66, 0.8);;
+    }
+
+    .back-to-mode {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: #1B4242;
+      color: white;
+      padding: 10px;
+      border-radius: 50%;
+      text-decoration: none;
+    }
+
+    .back-to-mode:hover {
+      background-color: #123333;
+    }
+  </style>
+</head>
+<body>
+  <div class="mode-title">
+    <h1>Riwayat Mode Push-Up</h1>
+  </div>
+
+  <table>
+    <tr>
+      <th>No.</th>
+      <th>Nama</th>
+      <th>Push-up Benar</th>
+      <th>Push-up Salah</th>
+    </tr>
+    <!-- Sample data, you can dynamically populate this with JavaScript -->
+    <tr>
+      <td>1</td>
+      <td>John Doe</td>
+      <td>20</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Kevin</td>
+      <td>25</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Jenny</td>
+      <td>20</td>
+      <td>6</td>
+    </tr>
+    <td>4</td>
+      <td>Kent</td>
+      <td>30</td>
+      <td>1</td>
+    </tr>
+    <td>5</td>
+      <td>Derby</td>
+      <td>26</td>
+      <td>3</td>
+    </tr>
+    
+    <!-- Add more rows as needed -->
+    <!-- <tr>...</tr> -->
+  </table>
+<!-- Link back to mode.html -->
+<a href="mode.html" class="back-to-mode">&#8592;</a>
+
+  <script src="script.js"></script> <!-- Hubungkan file JavaScript jika diperlukan -->
+</body>
+</html>
