@@ -32,61 +32,61 @@
                         <button class="pause-btn">Pause</button>
                         <button class="history-btn" onclick="goToHistoryPage('history.html')">Back</button>
                     </div>
-                    <button class="stop-btn">Stop</button>
+                    <button class="stop-btn" onclick="stopReceivingData()" >Stop</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        var timerInterval; // Variabel untuk menyimpan interval waktu mundur
         var counterInterval; // Variabel untuk menyimpan interval pengiriman data 'counter'
     
         function startTimer() {
-            clearInterval(counterInterval); // Hentikan interval jika sebelumnya sudah berjalan
+            clearInterval(counterInterval); // Hentikan interval pengambilan data 'counter' jika sebelumnya sudah berjalan
+            clearInterval(timerInterval); // Hentikan interval waktu mundur jika sebelumnya sudah berjalan
+            
             var countdownTime = 20; // Waktu mundur dalam detik
             var countdownElement = document.getElementById('countdown');
     
             // Mulai interval untuk mengurangi waktu mundur setiap detik
-            var timerInterval = setInterval(function() {
+            timerInterval = setInterval(function() {
                 var minutes = Math.floor(countdownTime / 60);
                 var seconds = countdownTime % 60;
                 countdownElement.innerText = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-                
+    
                 if (countdownTime <= 0) {
                     clearInterval(timerInterval); // Hentikan interval jika waktu mundur habis
                     stopReceivingData(); // Hentikan penerimaan data dari views.py
                 } else {
                     countdownTime--;
+                    if (countdownTime === 19) { // Mulai menerima data 'counter' dari views.py hanya saat waktu mundur dimulai
+                        startReceivingData();
+                    }
                 }
             }, 1000);
-    
-            // Mulai menerima data 'counter' dari views.py hanya sekali
-            startReceivingData();
         }
     
         function startReceivingData() {
-            // Mulai mengambil data 'counter' dari views.py menggunakan AJAX hanya sekali
-            $.ajax({
-                url: '/get-counter',
-                type: 'GET',
-                success: function(data) {
-                    $('#correctCounter').text(data.counter); // Menampilkan nilai counter pada elemen <p id="correctCounter">
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                },
-                // complete: function() {
-                //     // Setelah berhasil mengambil data, tidak perlu lagi memanggil fungsi ini
-                //     // Jadi kita tidak perlu membuat interval lagi
-                // }
-            });
+            // Mulai mengambil data 'counter' dari views.py menggunakan AJAX setiap detik
+            counterInterval = setInterval(function() {
+                $.ajax({
+                    url: '/get-counter',
+                    type: 'GET',
+                    success: function(data) {
+                        $('#correctCounter').text(data.counter);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }, 100);
         }
     
         function stopReceivingData() {
             clearInterval(counterInterval); // Hentikan interval pengambilan data 'counter' dari views.py
+            clearInterval(timerInterval); // Hentikan interval waktu mundur jika tombol "Stop" ditekan
         }
     </script>
-    
-
 </body>
 </html>
