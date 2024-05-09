@@ -16,7 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from myapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    # path('stream-counter/', views.stream_counter),
+    path('get-counter/', views.get_counter),
+    # path('start-thread/', views.start_thread),
+    # path('stop-thread/', views.stop_thread),
 ]

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter dan Waktu Mundur</title>
+  <link rel="stylesheet" href="/static/home.css"> <!-- Hubungkan file CSS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Hubungkan jQuery -->
+</head>
+<body>
+    <div class="mode-title">
+        <h1>Mode Push-up</h1>
+    </div>
+    <div class="container">
+        <div class="counters">
+            <div class="counter">
+                <h2>Gerakan Benar</h2>
+                <p id="correctCounter">0</p>
+            </div>
+            <div class="counter">
+                <h2>Gerakan Salah</h2>
+                <p id="wrongCounter">0</p>
+            </div>
+        </div>
+        <div class="divider">
+            <div class="timer">
+                <h2>Waktu Mundur</h2>
+                <p id="countdown">00:20</p> <!-- Waktu mundur default 20 detik -->
+                <div class="buttons">
+                    <button class="start-btn" onclick="startTimer()">Start</button> <!-- Memulai waktu mundur dan memulai menerima data -->
+                    <div class="pause-history-container">
+                        <button class="pause-btn">Pause</button>
+                        <button class="history-btn" onclick="goToHistoryPage('history.html')">Back</button>
+                    </div>
+                    <button class="stop-btn">Stop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var counterInterval; // Variabel untuk menyimpan interval pengiriman data 'counter'
+    
+        function startTimer() {
+            clearInterval(counterInterval); // Hentikan interval jika sebelumnya sudah berjalan
+            var countdownTime = 20; // Waktu mundur dalam detik
+            var countdownElement = document.getElementById('countdown');
+    
+            // Mulai interval untuk mengurangi waktu mundur setiap detik
+            var timerInterval = setInterval(function() {
+                var minutes = Math.floor(countdownTime / 60);
+                var seconds = countdownTime % 60;
+                countdownElement.innerText = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                
+                if (countdownTime <= 0) {
+                    clearInterval(timerInterval); // Hentikan interval jika waktu mundur habis
+                    stopReceivingData(); // Hentikan penerimaan data dari views.py
+                } else {
+                    countdownTime--;
+                }
+            }, 1000);
+    
+            // Mulai menerima data 'counter' dari views.py hanya sekali
+            startReceivingData();
+        }
+    
+        function startReceivingData() {
+            // Mulai mengambil data 'counter' dari views.py menggunakan AJAX hanya sekali
+            $.ajax({
+                url: '/get-counter',
+                type: 'GET',
+                success: function(data) {
+                    $('#correctCounter').text(data.counter); // Menampilkan nilai counter pada elemen <p id="correctCounter">
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                },
+                // complete: function() {
+                //     // Setelah berhasil mengambil data, tidak perlu lagi memanggil fungsi ini
+                //     // Jadi kita tidak perlu membuat interval lagi
+                // }
+            });
+        }
+    
+        function stopReceivingData() {
+            clearInterval(counterInterval); // Hentikan interval pengambilan data 'counter' dari views.py
+        }
+    </script>
+    
+
+</body>
+</html>
