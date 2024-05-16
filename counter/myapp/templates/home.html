@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Counter dan Waktu Mundur</title>
-  <link rel="stylesheet" href="/static/home.css"> <!-- Hubungkan file CSS -->
+  <link rel="stylesheet" href="static/css/home.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Hubungkan jQuery -->
 </head>
 <body>
@@ -28,9 +28,9 @@
                 <p id="countdown">00:20</p> <!-- Waktu mundur default 20 detik -->
                 <div class="buttons">
                     <button class="start-btn" onclick="startTimer()">Start</button> <!-- Memulai waktu mundur dan memulai menerima data -->
-                    <div class="pause-history-container">
-                        <button class="pause-btn">Pause</button>
-                        <button class="history-btn" onclick="goToHistoryPage('history.html')">Back</button>
+                    <div class="restart-back-container">
+                        <button class="restart-btn">Restart</button>
+                        <button class="back-btn" onclick="goToHomePage('mode.html')">Back</button>
                     </div>
                     <button class="stop-btn" onclick="stopReceivingData()" >Stop</button>
                 </div>
@@ -39,6 +39,7 @@
     </div>
 
     <script>
+
         var timerInterval; // Variabel untuk menyimpan interval waktu mundur
         var counterInterval; // Variabel untuk menyimpan interval pengiriman data 'counter'
     
