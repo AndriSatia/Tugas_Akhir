@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter dan Waktu Mundur</title>
+  <link rel="stylesheet" href="../static/css/mode.css"> <!-- Hubungkan file CSS -->
+</head>
+<body>
+  <div class="mode-title">
+    <h1>Counter Push-Up dan Sit-Up berbasis Sensor</h1>
+  </div>
+  <div class="container">
+    <div class="mode-box">
+      <h2>Pilih Mode</h2>
+      <button class="mode-button" onclick="goToCounter()">Push-Up</button>
+      <button class="mode-button" onclick="goToCounter()">Sit-Up</button>
+    </div>
+  </div>
+
+  <script>
+    function goToCounter() {
+      window.location.href = '/home'; // Redirect ke halaman home
+    }
+  </script> <!-- Hubungkan file JavaScript jika diperlukan -->
+</body>
+</html>

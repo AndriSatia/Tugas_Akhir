@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Counter dan Waktu Mundur</title>
-  <link rel="stylesheet" href="static/css/home.css">
+  <link rel="stylesheet" href="../static/css/home.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Hubungkan jQuery -->
 </head>
 <body>
@@ -25,29 +25,29 @@
         <div class="divider">
             <div class="timer">
                 <h2>Waktu Mundur</h2>
-                <p id="countdown">00:20</p> <!-- Waktu mundur default 20 detik -->
+                <p id="countdown">01:00</p> <!-- Waktu mundur default 1 menit -->
                 <div class="buttons">
                     <button class="start-btn" onclick="startTimer()">Start</button> <!-- Memulai waktu mundur dan memulai menerima data -->
                     <div class="restart-back-container">
-                        <button class="restart-btn">Restart</button>
-                        <button class="back-btn" onclick="goToHomePage('mode.html')">Back</button>
+                        <button class="restart-btn" onclick="restartTimer()">Restart</button>
+                        <button class="back-btn" onclick="goToMode()">Back</button>
                     </div>
-                    <button class="stop-btn" onclick="stopReceivingData()" >Stop</button>
+                    <button class="stop-btn" onclick="stopReceivingData()">Stop</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-
         var timerInterval; // Variabel untuk menyimpan interval waktu mundur
         var counterInterval; // Variabel untuk menyimpan interval pengiriman data 'counter'
-    
+        var counter = 0; // Variabel untuk menyimpan nilai counter
+
         function startTimer() {
             clearInterval(counterInterval); // Hentikan interval pengambilan data 'counter' jika sebelumnya sudah berjalan
             clearInterval(timerInterval); // Hentikan interval waktu mundur jika sebelumnya sudah berjalan
             
-            var countdownTime = 20; // Waktu mundur dalam detik
+            var countdownTime = 60; // Waktu mundur dalam detik
             var countdownElement = document.getElementById('countdown');
     
             // Mulai interval untuk mengurangi waktu mundur setiap detik
@@ -61,13 +61,13 @@
                     stopReceivingData(); // Hentikan penerimaan data dari views.py
                 } else {
                     countdownTime--;
-                    if (countdownTime === 19) { // Mulai menerima data 'counter' dari views.py hanya saat waktu mundur dimulai
+                    if (countdownTime === 59) { // Mulai menerima data 'counter' dari views.py hanya saat waktu mundur dimulai
                         startReceivingData();
                     }
                 }
             }, 1000);
         }
-    
+
         function startReceivingData() {
             // Mulai mengambil data 'counter' dari views.py menggunakan AJAX setiap detik
             counterInterval = setInterval(function() {
@@ -75,18 +75,33 @@
                     url: '/get-counter',
                     type: 'GET',
                     success: function(data) {
-                        $('#correctCounter').text(data.counter);
+                        if (data.data === 1) {
+                            counter++;
+                            $('#correctCounter').text(counter);
+                        }
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
                     }
                 });
-            }, 100);
+            }, 1000); // Ambil data setiap detik
         }
-    
+
         function stopReceivingData() {
             clearInterval(counterInterval); // Hentikan interval pengambilan data 'counter' dari views.py
             clearInterval(timerInterval); // Hentikan interval waktu mundur jika tombol "Stop" ditekan
+        }
+
+        function restartTimer() {
+            stopReceivingData(); // Hentikan semua interval
+            counter = 0; // Reset nilai counter
+            $('#correctCounter').text(counter); // Reset tampilan counter benar
+            $('#wrongCounter').text(0); // Reset tampilan counter salah, jika diperlukan
+            document.getElementById('countdown').innerText = "01:00"; // Reset tampilan waktu mundur ke 1 menit
+        }
+
+        function goToMode() {
+            window.location.href = '/mode'; // Redirect ke halaman home
         }
     </script>
 </body>

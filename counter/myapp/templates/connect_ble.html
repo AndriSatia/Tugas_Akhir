@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koneksi BLE</title>
+  <link rel="stylesheet" href="../static/css/connect_ble.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Hubungkan jQuery -->
+</head>
+<body>
+  <div class="container">
+    <h1>Koneksi BLE</h1>
+    <button class="connect-btn" onclick="connectBLE()">Connect</button>
+    <p id="connectionStatus">Status: Disconnected</p>
+    <button class="next-btn" id="nextBtn" style="display:none;" onclick="goToMode()">Next</button> <!-- Tombol Next -->
+  </div>
+
+  <script>
+    function connectBLE() {
+      $.ajax({
+        url: '/connect-ble?start=1',
+        type: 'GET',
+        success: function(data) {
+          if (data.connected) {
+            $('#connectionStatus').text('Status: Connected');
+            $('#nextBtn').show(); // Tampilkan tombol Next setelah koneksi berhasil
+          } else {
+            $('#connectionStatus').text('Status: Connection Failed');
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', error);
+          $('#connectionStatus').text('Status: Connection Error');
+        }
+      });
+    }
+
+    function goToMode() {
+      window.location.href = '/mode'; // Redirect ke halaman home
+    }
+  </script>
+</body>
+</html>

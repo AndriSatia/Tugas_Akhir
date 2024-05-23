@@ -20,9 +20,9 @@ from myapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
-    # path('stream-counter/', views.stream_counter),
-    path('get-counter/', views.get_counter),
-    # path('start-thread/', views.start_thread),
-    # path('stop-thread/', views.stop_thread),
+    path('', views.connect_ble_view, name='connect_ble'),
+    path('home/', views.home, name='home'),
+    path('mode/', views.mode, name='mode'),
+    path('connect-ble/', views.connect_ble_view, name='connect_ble'),
+    path('get-counter/', views.get_counter, name='get_counter'),
 ]
