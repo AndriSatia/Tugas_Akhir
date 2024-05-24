@@ -25,13 +25,14 @@ body {
 .container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   width: 80%;
 }
 
 .counters {
   display: flex;
   gap: 20px;
+  flex: 1;
 }
 
 .counter {
@@ -41,10 +42,15 @@ body {
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 300px;
 }
 
 .counter h2 {
-  margin-bottom: 5px; 
+  margin-bottom: 0; /* Menghilangkan margin bawah */
 }
 
 #correctCounter, #wrongCounter {
@@ -76,6 +82,12 @@ body {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 300px;
+  margin-left: 20px; /* Menambahkan jarak antara .counter dan .divider */
 }
 
 .timer {
@@ -100,82 +112,75 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-}
-
 .start-btn,
 .restart-btn,
-.stop-btn,
-.back-btn {
+.stop-btn {
   font-family: PoppinsReg;
   font-size: 20px;
   padding: 10px 16px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  width: 200px; /* Menyamakan lebar tombol */
+  margin-right: 10px; /* Menambahkan jarak antara tombol */
 }
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
 
 .start-btn {
   background-color: #0ca390; 
   color: white;
-  border: none;
 }
 
 .restart-btn {
-  background-color: 	#f7b66b;
+  background-color: 	#faab51;
   color: white;
-  border: none;
 }
 
 .stop-btn {
   background-color: #fd3768;
   color: white;
-  border: none;
 }
 
-.start-btn:hover {
-  background-color: #0d6f62;
-}
-
-.restart-btn:hover {
-  background-color: #d19a5a;
-}
-
+.start-btn:hover,
+.restart-btn:hover,
 .stop-btn:hover {
-  background-color: #c42b51;
+  filter: brightness(90%);
 }
 
 .back-btn {
-  display: inline-block;
+  font-family: PoppinsReg;
+  font-size: 24px;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
   background-color: #2c8bbf;
-  border: 8px solid #2c8bbf;
   color: #FFFFFF;
   text-align: center;
-  width: 100px; 
+  width: 200px; /* Memperpanjang lebar tombol */
   transition: all 0.5s;
-  cursor: pointer;
-  margin-top: 10px;
-  position: relative; 
+  position: absolute;
+  bottom: 20px; /* Jarak dari bawah layar */
+  left: 50%;
+  transform: translateX(-50%); /* Pusatkan secara horizontal */
 }
 
 .back-btn:hover {
   background-color: #0b4860;
-  border: 8px solid #0b4860;
   padding-right: 16px;
 }
 
-.back-btn span {
-  display: inline-block;
-}
-
-.back-btn::after { 
+.back-btn::after { /* Mengubah span menjadi pseudo-elemen after */
   content: '\00bb';
   position: absolute;
   top: 50%;
-  right: 10px; 
+  right: 20px; /* Mengatur jarak panah dari tepi tombol */
   transform: translateY(-50%); /* Memposisikan panah di tengah tombol secara vertikal */
   opacity: 0; /* Menyembunyikan panah saat tombol tidak dihover */
   transition: 0.5s;
@@ -183,12 +188,5 @@ body {
 
 .back-btn:hover::after {
   opacity: 1; /* Menampilkan panah saat tombol dihover */
-  right: 0; /* Mengatur jarak panah dari tepi tombol saat dihover */
+  right: 10px; /* Mengatur jarak panah dari tulisan saat dihover */
 }
-
-.restart-back-container {
-  display: flex;
-  flex-direction: column;
-}
-
-

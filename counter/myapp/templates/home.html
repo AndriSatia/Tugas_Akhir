@@ -28,15 +28,13 @@
                 <p id="countdown">01:00</p> <!-- Waktu mundur default 1 menit -->
                 <div class="buttons">
                     <button class="start-btn" onclick="startTimer()">Start</button> <!-- Memulai waktu mundur dan memulai menerima data -->
-                    <div class="restart-back-container">
-                        <button class="restart-btn" onclick="restartTimer()">Restart</button>
-                        <button class="back-btn" onclick="goToMode()">Back</button>
-                    </div>
+                    <button class="restart-btn" onclick="restartTimer()">Restart</button>
                     <button class="stop-btn" onclick="stopReceivingData()">Stop</button>
                 </div>
             </div>
         </div>
     </div>
+    <button class="back-btn" onclick="goToMode()">Back</button>
 
     <script>
         var timerInterval; // Variabel untuk menyimpan interval waktu mundur

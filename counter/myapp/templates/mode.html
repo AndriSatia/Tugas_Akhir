@@ -7,6 +7,32 @@
   <link rel="stylesheet" href="../static/css/mode.css"> <!-- Hubungkan file CSS -->
 </head>
 <body>
+  <button class="back-btn" onclick="goToConnectBLE()">Kembali ke <strong>Koneksi BLE</strong></button>
+
+  <!-- Modal -->
+  <div id="instructionModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Instruksi Penggunaan</h3>
+      <hr> <!-- Garis pemisah -->
+      <ol>
+        <li>Pilih mode latihan (push-up atau sit-up) dengan menekan tombol mode yang sesuai. Halaman perhitungan akan muncul secara otomatis.</li>
+        <li>Pasang sensor pada kedua lengan Anda. Pastikan kotak sensor mengarah ke luar lengan Anda.</li>
+        <li>Sebelum memulai, lakukan gerakan latihan yang dipilih untuk mengkalibrasi sensor.</li>
+        <li>Setelah menekan tombol <strong>Start</strong>, lakukan gerakan hingga waktu hitung mundur selesai.</li>
+        <li>Sensor akan mendeteksi gerakan Anda dan menghitung jumlah push-up atau sit-up yang dilakukan.</li>
+        <li>Berikut adalah tombol lainnya:
+          <ul>
+            <li><strong>Restart:</strong> Mengulang hitungan mundur dan penghitungan gerakan dari awal.</li>
+            <li><strong>Stop:</strong> Menghentikan hitungan mundur dan penghitungan gerakan.</li>
+          </ul>
+        </li>
+        <li>Jika Anda selesai, tekan tombol <strong>Back</strong> untuk kembali ke halaman utama.</li>
+      </ol>
+    </div>
+  </div>
+
+<button id="instructionButton" class="instruction-button">Instruksi Penggunaan</button>
   <div class="mode-title">
     <h1>Counter Push-Up dan Sit-Up berbasis Sensor</h1>
   </div>
@@ -22,6 +48,27 @@
     function goToCounter() {
       window.location.href = '/home'; // Redirect ke halaman home
     }
+
+    function goToConnectBLE() {
+      window.location.href = '/connect_ble';
+
+    }
+
+    // Menampilkan modal saat tombol ditekan
+  document.getElementById("instructionButton").onclick = function() {
+    document.getElementById("instructionModal").style.display = "block";
+  }
+
+  // Menutup modal saat tombol close atau area luar modal ditekan
+  document.getElementsByClassName("close")[0].onclick = function() {
+    document.getElementById("instructionModal").style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == document.getElementById("instructionModal")) {
+      document.getElementById("instructionModal").style.display = "none";
+    }
+  }
   </script> <!-- Hubungkan file JavaScript jika diperlukan -->
 </body>
 </html>
