@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="mode-title">
-        <h1>Mode Push-up</h1>
+        <h1>Mode Sit-up</h1>
     </div>
     <div class="container">
         <div class="counters">
@@ -40,30 +40,33 @@
         var timerInterval; // Variabel untuk menyimpan interval waktu mundur
         var counterInterval; // Variabel untuk menyimpan interval pengiriman data 'counter'
         var counter = 0; // Variabel untuk menyimpan nilai counter
+        var countdownTime = 60; // Waktu mundur dalam detik
+        var countdownElement = document.getElementById('countdown');
+        var timerRunning = false; // Flag untuk menandakan apakah timer sedang berjalan
 
         function startTimer() {
-            clearInterval(counterInterval); // Hentikan interval pengambilan data 'counter' jika sebelumnya sudah berjalan
-            clearInterval(timerInterval); // Hentikan interval waktu mundur jika sebelumnya sudah berjalan
-            
-            var countdownTime = 60; // Waktu mundur dalam detik
-            var countdownElement = document.getElementById('countdown');
-    
-            // Mulai interval untuk mengurangi waktu mundur setiap detik
-            timerInterval = setInterval(function() {
-                var minutes = Math.floor(countdownTime / 60);
-                var seconds = countdownTime % 60;
-                countdownElement.innerText = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-    
-                if (countdownTime <= 0) {
-                    clearInterval(timerInterval); // Hentikan interval jika waktu mundur habis
-                    stopReceivingData(); // Hentikan penerimaan data dari views.py
-                } else {
-                    countdownTime--;
-                    if (countdownTime === 59) { // Mulai menerima data 'counter' dari views.py hanya saat waktu mundur dimulai
-                        startReceivingData();
+            if (!timerRunning) {
+                timerRunning = true;
+                clearInterval(counterInterval); // Hentikan interval pengambilan data 'counter' jika sebelumnya sudah berjalan
+                clearInterval(timerInterval); // Hentikan interval waktu mundur jika sebelumnya sudah berjalan
+
+                // Mulai interval untuk mengurangi waktu mundur setiap detik
+                timerInterval = setInterval(function() {
+                    var minutes = Math.floor(countdownTime / 60);
+                    var seconds = countdownTime % 60;
+                    countdownElement.innerText = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+
+                    if (countdownTime <= 0) {
+                        clearInterval(timerInterval); // Hentikan interval jika waktu mundur habis
+                        stopReceivingData(); // Hentikan penerimaan data dari views.py
+                    } else {
+                        countdownTime--;
+                        if (countdownTime === 59) { // Mulai menerima data 'counter' dari views.py hanya saat waktu mundur dimulai
+                            startReceivingData();
+                        }
                     }
-                }
-            }, 1000);
+                }, 1000);
+            }
         }
 
         function startReceivingData() {
@@ -88,14 +91,17 @@
         function stopReceivingData() {
             clearInterval(counterInterval); // Hentikan interval pengambilan data 'counter' dari views.py
             clearInterval(timerInterval); // Hentikan interval waktu mundur jika tombol "Stop" ditekan
+            timerRunning = false;
         }
 
         function restartTimer() {
             stopReceivingData(); // Hentikan semua interval
             counter = 0; // Reset nilai counter
+            countdownTime = 60; // Reset waktu mundur ke 1 menit
             $('#correctCounter').text(counter); // Reset tampilan counter benar
             $('#wrongCounter').text(0); // Reset tampilan counter salah, jika diperlukan
-            document.getElementById('countdown').innerText = "01:00"; // Reset tampilan waktu mundur ke 1 menit
+            countdownElement.innerText = "01:00"; // Reset tampilan waktu mundur ke 1 menit
+            timerRunning = false; // Set flag timerRunning ke false
         }
 
         function goToMode() {

@@ -21,8 +21,13 @@ from myapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.connect_ble_view, name='connect_ble'),
-    path('home/', views.home, name='home'),
+    path('push-up/', views.push_count, name='push_up'),
+    path('sit-up/', views.sit_count, name='sit_up'),
     path('mode/', views.mode, name='mode'),
     path('connect-ble/', views.connect_ble_view, name='connect_ble'),
     path('get-counter/', views.get_counter, name='get_counter'),
+    path('history/', views.history, name='history'),
+    path('data-csv/', views.data_csv, name='data_csv'),
+    path('add-data/', views.add_data_to_csv, name='add_data'),
+    path('clear-history/', views.clear_csv, name='clear_csv')
 ]

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Koneksi BLE</title>
+  <title>Koneksi Bluetooth</title>
   <link rel="stylesheet" href="../static/css/connect_ble.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Hubungkan jQuery -->
 </head>
@@ -12,10 +12,11 @@
     <h1>Counter Push-Up dan Sit-Up berbasis Sensor</h1>
   </div>
   <div class="container">
-    <h2>Koneksi BLE</h2>
+    <h2>Koneksi Bluetooth</h2>
     <button class="connect-btn" onclick="connectBLE()">Connect</button>
     <p id="connectionStatus">Status: Disconnected</p>
-    <button class="next-btn" id="nextBtn" style="display:none;" onclick="goToMode()">Next</button> <!-- Tombol Next -->
+    <button class="next-btn" id="nextBtn" onclick="goToMode()">Next</button>
+    <!-- <button class="next-btn" id="nextBtn" style="display:none;" onclick="goToMode()">Next</button> -->
   </div>
 
   <script>

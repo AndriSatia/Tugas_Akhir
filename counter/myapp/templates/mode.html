@@ -39,18 +39,22 @@
   <div class="container">
     <div class="mode-box">
       <h2>Pilih Mode</h2>
-      <button class="mode-button" onclick="goToCounter()">Push-Up</button>
-      <button class="mode-button" onclick="goToCounter()">Sit-Up</button>
+      <button class="mode-button" onclick="goToPush()">Push-Up</button>
+      <button class="mode-button" onclick="goToSit()">Sit-Up</button>
     </div>
   </div>
 
   <script>
-    function goToCounter() {
-      window.location.href = '/home'; // Redirect ke halaman home
+    function goToPush() {
+      window.location.href = '/push-up'; // Redirect ke halaman home
+    }
+
+    function goToSit() {
+      window.location.href = '/sit-up'; // Redirect ke halaman home
     }
 
     function goToConnectBLE() {
-      window.location.href = '/connect_ble';
+      window.history.back();
 
     }
 
