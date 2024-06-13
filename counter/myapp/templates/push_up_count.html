@@ -5,13 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Counter dan Waktu Mundur</title>
-    <link rel="stylesheet" href="../static/css/home.css">
+    <link rel="stylesheet" href="../static/css/counter.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Hubungkan jQuery -->
 </head>
 
 <body>
+    <div id="back-btn" onclick="goToMode()">
+        <img src="../static/img/back-icon.png" alt="Back">
+    </div>
+
     <div class="mode-title">
-        <h1>Mode Push-up</h1>
+        <h1 id="mode-title">Mode</h1>
     </div>
     <div class="container">
         <div class="counters">
@@ -29,17 +33,22 @@
                 <h2>Waktu Mundur</h2>
                 <p id="countdown">01:00</p> <!-- Waktu mundur default 1 menit -->
                 <div class="buttons">
-                    <button class="start-btn" onclick="startTimer()">Start</button>
+                    <button class="start-btn" onclick="startTimer()">Mulai</button>
                     <!-- Memulai waktu mundur dan memulai menerima data -->
-                    <button class="restart-btn" onclick="restartTimer()">Restart</button>
-                    <button class="stop-btn" onclick="stopReceivingData()">Stop</button>
+                    <button class="restart-btn" onclick="restartTimer()">Ulang</button>
+                    <button class="stop-btn" onclick="stopReceivingData()">Berhenti</button>
                 </div>
             </div>
         </div>
     </div>
-    <button class="back-btn" onclick="goToMode()">Back</button>
+    <button class="back-btn" onclick="saveData()">Simpan Data</button>
 
     <script>
+        // Ambil mode yang dipilih dari localStorage
+        var selectedMode = localStorage.getItem('selectedMode');
+        // Ubah judul mode-title sesuai dengan mode yang dipilih
+        document.getElementById('mode-title').textContent = 'Mode ' + selectedMode;
+
         var timerInterval; // Variabel untuk menyimpan interval waktu mundur
         var counterInterval; // Variabel untuk menyimpan interval pengiriman data 'counter'
         var counter = 0; // Variabel untuk menyimpan nilai counter
@@ -160,8 +169,14 @@
             }
         }
 
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            if (mode) {
+                document.getElementById('mode-title').textContent = 'Mode ' + mode;
+            }
+        }
     </script>
-    <button class="save-btn" onclick="saveData()">Save</button>
 </body>
 
 </html>

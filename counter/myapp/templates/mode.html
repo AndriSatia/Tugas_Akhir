@@ -1,78 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Counter dan Waktu Mundur</title>
   <link rel="stylesheet" href="../static/css/mode.css"> <!-- Hubungkan file CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 </head>
+
 <body>
-  <button class="back-btn" onclick="goToConnectBLE()">Kembali ke <strong>Koneksi BLE</strong></button>
+  <div id="back-btn" onclick="goToConnectBLE()">
+    <img src="../static/img/back-icon.png" alt="Back">
+  </div>
 
   <!-- Modal -->
   <div id="instructionModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <h3>Instruksi Penggunaan</h3>
-      <hr> <!-- Garis pemisah -->
-      <ol>
-        <li>Pilih mode latihan (push-up atau sit-up) dengan menekan tombol mode yang sesuai. Halaman perhitungan akan muncul secara otomatis.</li>
-        <li>Pasang sensor pada kedua lengan Anda. Pastikan kotak sensor mengarah ke luar lengan Anda.</li>
-        <li>Sebelum memulai, lakukan gerakan latihan yang dipilih untuk mengkalibrasi sensor.</li>
-        <li>Setelah menekan tombol <strong>Start</strong>, lakukan gerakan hingga waktu hitung mundur selesai.</li>
-        <li>Sensor akan mendeteksi gerakan Anda dan menghitung jumlah push-up atau sit-up yang dilakukan.</li>
-        <li>Berikut adalah tombol lainnya:
-          <ul>
-            <li><strong>Restart:</strong> Mengulang hitungan mundur dan penghitungan gerakan dari awal.</li>
-            <li><strong>Stop:</strong> Menghentikan hitungan mundur dan penghitungan gerakan.</li>
-          </ul>
-        </li>
-        <li>Jika Anda selesai, tekan tombol <strong>Back</strong> untuk kembali ke halaman utama.</li>
-      </ol>
+      <hr>
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <p>Pilih mode push-up atau sit-up dengan menekan tombol yang sesuai.</p>
+            <img class="img-mode" src="../static/img/mode.png" alt="Pilih mode.">
+          </div>
+          <div class="swiper-slide">
+            <p>Pasang masing-masing alat seperti pada gambar dibawah ini.</p>
+            <div class="img-container">
+              <img src="../static/img/arm.png" alt="Pasang alat di lengan.">
+              <img src="../static/img/leg.png" alt="Pasang alat di paha.">
+            </div>
+            <p>Sebelum memulai, lakukanlah gerakan mode yang sudah terpilih untuk kalibrasi. Lalu tekanlah tombol
+              "Mulai" dan lakukan gerakan hingga waktu hitung mundur selesai.</p>
+          </div>
+          <div class="swiper-slide">
+            <p>Anda bisa memilih tombol lainnya pada halaman counter.</p>
+            <img class="img-button" src="../static/img/counter.png" alt="Halaman counter beserta tombol-tombolnya.">
+            <ul>
+              <li>Mulai: Mulai menghitung gerakan.</li>
+              <li>Ulang: Mengatur ulang penghitung ke nol.</li>
+              <li>Berhenti: Menghentikan penghitungan sementara.</li>
+              <li>Simpan Data: Menyimpan data hasil perhitungan.</li>
+            </ul>
+            <p>Jika Anda selesai, tekan ikon "Kembali" untuk kembali ke halaman utama.</p>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+      </div>
     </div>
   </div>
 
-<button id="instructionButton" class="instruction-button">Instruksi Penggunaan</button>
+  <button id="instructionButton" class="instruction-button">Instruksi Penggunaan</button>
   <div class="mode-title">
     <h1>Counter Push-Up dan Sit-Up berbasis Sensor</h1>
   </div>
   <div class="container">
     <div class="mode-box">
       <h2>Pilih Mode</h2>
-      <button class="mode-button" onclick="goToPush()">Push-Up</button>
-      <button class="mode-button" onclick="goToSit()">Sit-Up</button>
+      <button class="mode-button" onclick="goToCounter('Push-up')">Push-Up</button>
+      <button class="mode-button" onclick="goToCounter('Sit-up')">Sit-Up</button>
     </div>
   </div>
 
   <script>
-    function goToPush() {
-      window.location.href = '/push-up'; // Redirect ke halaman home
-    }
-
-    function goToSit() {
-      window.location.href = '/sit-up'; // Redirect ke halaman home
+    function goToCounter(mode) {
+      // Simpan mode yang dipilih dalam local storage
+      localStorage.setItem('selectedMode', mode);
+      // Redirect ke halaman push_up_counter.html
+      window.location.href = '/push-up';
     }
 
     function goToConnectBLE() {
       window.history.back();
-
     }
 
     // Menampilkan modal saat tombol ditekan
-  document.getElementById("instructionButton").onclick = function() {
-    document.getElementById("instructionModal").style.display = "block";
-  }
+    document.getElementById("instructionButton").onclick = function () {
+      document.getElementById("instructionModal").style.display = "block";
+    }
 
-  // Menutup modal saat tombol close atau area luar modal ditekan
-  document.getElementsByClassName("close")[0].onclick = function() {
-    document.getElementById("instructionModal").style.display = "none";
-  }
-
-  window.onclick = function(event) {
-    if (event.target == document.getElementById("instructionModal")) {
+    // Menutup modal saat tombol close atau area luar modal ditekan
+    document.getElementsByClassName("close")[0].onclick = function () {
       document.getElementById("instructionModal").style.display = "none";
     }
-  }
-  </script> <!-- Hubungkan file JavaScript jika diperlukan -->
+
+    window.onclick = function (event) {
+      if (event.target == document.getElementById("instructionModal")) {
+        document.getElementById("instructionModal").style.display = "none";
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize Swiper
+      var swiper = new Swiper('.swiper-container', {
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+
+      // Modal functionality
+      var modal = document.getElementById("instructionModal");
+      var btn = document.getElementById("instructionButton");
+      var span = document.getElementsByClassName("close")[0];
+
+      btn.onclick = function () {
+        modal.style.display = "block";
+      }
+
+      span.onclick = function () {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    });
+
+    function changeModeTitle(mode) {
+      document.getElementById('mode-title').textContent = 'Mode ' + mode;
+    }
+  </script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,24 +8,32 @@
   <link rel="stylesheet" href="../static/css/connect_ble.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Hubungkan jQuery -->
 </head>
+
 <body>
+
+  <button class="history-button" onclick="goToHistory()">Riwayat</button>
+
   <div class="mode-title">
     <h1>Counter Push-Up dan Sit-Up berbasis Sensor</h1>
   </div>
   <div class="container">
     <h2>Koneksi Bluetooth</h2>
-    <button class="connect-btn" onclick="connectBLE()">Connect</button>
+    <button class="connect-btn" onclick="connectBLE()">Hubungkan</button>
     <p id="connectionStatus">Status: Disconnected</p>
-    <button class="next-btn" id="nextBtn" onclick="goToMode()">Next</button>
+    <button class="next-btn" id="nextBtn" onclick="goToMode()">Selanjutnya</button>
     <!-- <button class="next-btn" id="nextBtn" style="display:none;" onclick="goToMode()">Next</button> -->
   </div>
 
   <script>
+    function goToHistory() {
+      window.location.href = '/history';
+    }
+
     function connectBLE() {
       $.ajax({
         url: '/connect-ble?start=1',
         type: 'GET',
-        success: function(data) {
+        success: function (data) {
           if (data.connected) {
             $('#connectionStatus').text('Status: Connected');
             $('#nextBtn').show(); // Tampilkan tombol Next setelah koneksi berhasil
@@ -32,7 +41,7 @@
             $('#connectionStatus').text('Status: Connection Failed');
           }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           console.error('Error:', error);
           $('#connectionStatus').text('Status: Connection Error');
         }
@@ -44,4 +53,5 @@
     }
   </script>
 </body>
+
 </html>

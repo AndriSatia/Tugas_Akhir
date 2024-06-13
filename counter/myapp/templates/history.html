@@ -1,45 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Push-up</title>
+    <link rel="stylesheet" href="../static/css/history.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
 </head>
+
 <body>
-    <h1>Data Push-up</h1>
-    <button id="download-btn">Download</button>
-    <button id="clear-history-btn">Clear History</button>
-    <button id="back-btn">Back</button>
-    <table border="1" id="data-table">
-        <thead>
-            <tr>
-                <th>Nama</th>
-                <th>Mode</th> <!-- Kolom Mode ditambahkan -->
-                <th>Gerakan Benar</th>
-                <th>Gerakan Salah</th>
-                <th>Waktu</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be dynamically added here -->
-        </tbody>
-    </table>
+    <div class="title">
+        <h1>Riwayat</h1>
+    </div>
+    <div class="container">
+        <div class="table-container">
+            <table border="1" id="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Nama</th>
+                        <th style="width: 20%;">Mode</th>
+                        <th style="width: 18%;">Gerakan Benar</th>
+                        <th style="width: 18%;">Gerakan Salah</th>
+                        <th style="width: 14%;">Waktu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="button-container">
+            <button id="download-btn">Unduh</button>
+            <button id="clear-history-btn">Hapus Riwayat</button>
+        </div>
+    </div>
+    <div id="back-btn">
+        <img src="../static/img/back-icon.png" alt="Back">
+    </div>
+    <div href="/" class="home-icon" onclick="goToConnectBLE()">
+        <img src="../static/img/home-icon.png" alt="Home">
+    </div>
 
     <script>
-        $(document).ready(function(){
+        function checkScrollbar() {
+            var body = document.body;
+            var hasScrollbar = body.scrollHeight > window.innerHeight;
+            body.style.overflow = hasScrollbar ? 'auto' : 'hidden';
+        }
+
+        // Panggil fungsi checkScrollbar saat halaman dimuat
+        window.addEventListener('load', checkScrollbar);
+
+        // Panggil fungsi checkScrollbar saat ukuran jendela berubah
+        window.addEventListener('resize', checkScrollbar);
+
+        function goToConnectBLE() {
+            window.location.href = '/';
+        }
+
+        $(document).ready(function () {
             // Function to fetch data from Django views.py using AJAX
             function fetchData() {
                 $.ajax({
                     type: 'GET',
                     url: '/data-csv',  // URL to your Django view for fetching data
-                    success: function(response) {
+                    success: function (response) {
                         // Clear existing table rows
                         $('#data-table tbody').empty();
-                        
+
                         // Iterate through received data and append rows to the table
-                        $.each(response.data, function(index, row) {
+                        $.each(response.data, function (index, row) {
                             $('#data-table tbody').append(
                                 '<tr>' +
                                 '<td>' + row.Nama + '</td>' +
@@ -51,7 +83,7 @@
                             );
                         });
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error fetching data:', error);
                     }
                 });
@@ -61,13 +93,13 @@
             fetchData();
 
             // Function to download data as Excel
-            $('#download-btn').click(function() {
-                var wb = XLSX.utils.table_to_book(document.getElementById('data-table'), {sheet: "Sheet1"});
+            $('#download-btn').click(function () {
+                var wb = XLSX.utils.table_to_book(document.getElementById('data-table'), { sheet: "Sheet1" });
                 XLSX.writeFile(wb, 'data_push-up.xlsx');
             });
 
             // Function to clear history with confirmation
-            $('#clear-history-btn').click(function() {
+            $('#clear-history-btn').click(function () {
                 if (confirm('Are you sure you want to clear all history?')) {
                     $.ajax({
                         type: 'POST',
@@ -75,14 +107,14 @@
                         data: {
                             csrfmiddlewaretoken: '{{ csrf_token }}'
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.status === 'success') {
                                 fetchData();  // Refresh the table data after clearing
                             } else {
                                 console.error('Error clearing history:', response.message);
                             }
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error('Error clearing history:', error);
                         }
                     });
@@ -90,10 +122,11 @@
             });
 
             // Function to go back to the previous page
-            $('#back-btn').click(function() {
+            $('#back-btn').click(function () {
                 window.history.back();
             });
         });
     </script>
 </body>
+
 </html>

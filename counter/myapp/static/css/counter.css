@@ -20,6 +20,7 @@ body {
   background-image: linear-gradient(180deg, #bdcee0, #f0f7fe);
   background-size: cover;
   background-position: center;
+  position: relative;
 }
 
 .container {
@@ -50,29 +51,30 @@ body {
 }
 
 .counter h2 {
-  margin-bottom: 0; /* Menghilangkan margin bawah */
+  margin-bottom: 0;
 }
 
-#correctCounter, #wrongCounter {
+#correctCounter,
+#wrongCounter {
   color: white;
-  font-size: 60px; 
+  font-size: 60px;
   font-weight: bold;
-  display: inline-block; 
-  width: 165px; 
-  height: 165px; 
-  line-height: 165px; 
-  text-align: center; 
-  border-radius: 90%; 
+  display: inline-block;
+  width: 165px;
+  height: 165px;
+  line-height: 165px;
+  text-align: center;
+  border-radius: 90%;
 }
 
 #correctCounter {
-  background-color: #0b8d7c; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  background-color: #0b8d7c;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #wrongCounter {
-  background-color: #dc2d59; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  background-color: #dc2d59;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .divider {
@@ -87,7 +89,7 @@ body {
   flex-direction: column;
   justify-content: center;
   height: 300px;
-  margin-left: 20px; /* Menambahkan jarak antara .counter dan .divider */
+  margin-left: 20px;
 }
 
 .timer {
@@ -95,11 +97,11 @@ body {
 }
 
 #countdown {
-  background-color: white; 
-  padding: 5px 10px; 
-  border-radius: 5px; 
-  font-size: 36px; 
-  font-weight: bold; 
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 36px;
+  font-weight: bold;
 }
 
 .mode-title {
@@ -121,8 +123,8 @@ body {
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  width: 200px; /* Menyamakan lebar tombol */
-  margin-right: 10px; /* Menambahkan jarak antara tombol */
+  width: 200px;
+  margin-right: 10px;
 }
 
 .buttons {
@@ -131,14 +133,13 @@ body {
   margin-top: 20px;
 }
 
-
 .start-btn {
-  background-color: #0ca390; 
+  background-color: #0ca390;
   color: white;
 }
 
 .restart-btn {
-  background-color: 	#faab51;
+  background-color: #faab51;
   color: white;
 }
 
@@ -155,7 +156,7 @@ body {
 
 .back-btn {
   font-family: PoppinsReg;
-  font-size: 24px;
+  font-size: 18px;
   padding: 10px 16px;
   border-radius: 5px;
   border: none;
@@ -163,12 +164,12 @@ body {
   background-color: #2c8bbf;
   color: #FFFFFF;
   text-align: center;
-  width: 200px; /* Memperpanjang lebar tombol */
+  width: 200px;
   transition: all 0.5s;
   position: absolute;
-  bottom: 20px; /* Jarak dari bawah layar */
+  bottom: 20px;
   left: 50%;
-  transform: translateX(-50%); /* Pusatkan secara horizontal */
+  transform: translateX(-50%);
 }
 
 .back-btn:hover {
@@ -176,17 +177,57 @@ body {
   padding-right: 16px;
 }
 
-.back-btn::after { /* Mengubah span menjadi pseudo-elemen after */
+.back-btn::after {
   content: '\00bb';
   position: absolute;
   top: 50%;
-  right: 20px; /* Mengatur jarak panah dari tepi tombol */
-  transform: translateY(-50%); /* Memposisikan panah di tengah tombol secara vertikal */
-  opacity: 0; /* Menyembunyikan panah saat tombol tidak dihover */
+  right: 20px;
+  transform: translateY(-50%);
+  opacity: 0;
   transition: 0.5s;
 }
 
 .back-btn:hover::after {
-  opacity: 1; /* Menampilkan panah saat tombol dihover */
-  right: 10px; /* Mengatur jarak panah dari tulisan saat dihover */
+  opacity: 1;
+  right: 10px;
+}
+
+#back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#back-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+#back-btn:hover {
+  transform: scale(1.1);
+}
+
+#back-btn::after {
+  content: "Kembali";
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #3c4e82;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+#back-btn:hover::after {
+  opacity: 1;
 }
