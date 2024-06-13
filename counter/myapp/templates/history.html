@@ -100,7 +100,7 @@
 
             // Function to clear history with confirmation
             $('#clear-history-btn').click(function () {
-                if (confirm('Are you sure you want to clear all history?')) {
+                if (confirm('Apakah Anda yakin ingin menghapus semua riwayat?')) {
                     $.ajax({
                         type: 'POST',
                         url: '/clear-history/',  // URL to your Django view for clearing data
