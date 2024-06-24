@@ -12,6 +12,9 @@ from asgiref.sync import sync_to_async
 client = None  # Variabel untuk menyimpan koneksi BleakClient
 loop = asyncio.get_event_loop()
 
+counter = 0  # Counter untuk menyimpan jumlah data "True" yang diterima
+wrong = 0
+
 async def connect_ble():
     global client
     if client is None:
@@ -20,23 +23,28 @@ async def connect_ble():
     return client.is_connected
 
 async def receive_data():
-    global client
+    global client, counter, wrong
     if client is not None and client.is_connected:
         value = await client.read_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a")
         if value:
             received_data = value.decode()
-            print(received_data)
+            # print(received_data)
             if received_data == "1":
                 # Mengirim feedback ke ESP32 melalui karakteristik RX
                 feedback_value = "1"  # Nilai string yang akan dikirim
                 feedback_bytes = feedback_value.encode('utf-8')  # Konversi string ke byte array
                 await client.write_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a", feedback_bytes)
+                counter += 1
+                print('Counter: ', counter)
                 return 1
             elif received_data == "2":
                 # Mengirim feedback ke ESP32 melalui karakteristik RX
                 feedback_value = "1"  # Nilai string yang akan dikirim
                 feedback_bytes = feedback_value.encode('utf-8')  # Konversi string ke byte array
                 await client.write_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a", feedback_bytes)
+                wrong += 1
+                print('Received: False')
+                print('Wrong: ', wrong)
                 return 2
     return 0
 

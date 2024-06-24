@@ -52,9 +52,14 @@
         var timerInterval; // Variabel untuk menyimpan interval waktu mundur
         var counterInterval; // Variabel untuk menyimpan interval pengiriman data 'counter'
         var counter = 0; // Variabel untuk menyimpan nilai counter
+        var wrong = 0;
         var countdownTime = 60; // Waktu mundur dalam detik
         var countdownElement = document.getElementById('countdown');
         var timerRunning = false; // Flag untuk menandakan apakah timer sedang berjalan
+
+        // Tambahkan elemen audio untuk suara gerakan benar dan salah
+        var correctSound = new Audio('../static/sound/benar.wav');
+        var wrongSound = new Audio('../static/sound/salah.wav');
 
         function startTimer() {
             if (!timerRunning) {
@@ -91,10 +96,12 @@
                         if (data.data === 1) {
                             counter++;
                             $('#correctCounter').text(counter);
+                            correctSound.play();
                         }
                         else if (data.data === 2) {
-                            counter++;
-                            $('#wrongCounter').text(counter);
+                            wrong++;
+                            $('#wrongCounter').text(wrong);
+                            // wrongSound.play();
                         }
                     },
                     error: function (xhr, status, error) {
