@@ -29,5 +29,6 @@ urlpatterns = [
     path('history/', views.history, name='history'),
     path('data-csv/', views.data_csv, name='data_csv'),
     path('add-data/', views.add_data_to_csv, name='add_data'),
-    path('clear-history/', views.clear_csv, name='clear_csv')
+    path('clear-history/', views.clear_csv, name='clear_csv'),
+    path('reset_esp32/', views.reset_esp32_view, name='reset_esp32')
 ]

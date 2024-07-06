@@ -28,25 +28,33 @@ async def receive_data():
         value = await client.read_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a")
         if value:
             received_data = value.decode()
-            # print(received_data)
             if received_data == "1":
                 # Mengirim feedback ke ESP32 melalui karakteristik RX
-                feedback_value = "1"  # Nilai string yang akan dikirim
-                feedback_bytes = feedback_value.encode('utf-8')  # Konversi string ke byte array
+                feedback_value = "1"
+                feedback_bytes = feedback_value.encode('utf-8')
                 await client.write_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a", feedback_bytes)
                 counter += 1
                 print('Counter: ', counter)
                 return 1
             elif received_data == "2":
                 # Mengirim feedback ke ESP32 melalui karakteristik RX
-                feedback_value = "1"  # Nilai string yang akan dikirim
-                feedback_bytes = feedback_value.encode('utf-8')  # Konversi string ke byte array
+                feedback_value = "1"
+                feedback_bytes = feedback_value.encode('utf-8')
                 await client.write_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a", feedback_bytes)
                 wrong += 1
                 print('Received: False')
                 print('Wrong: ', wrong)
                 return 2
     return 0
+
+async def reset_esp32():
+    global client
+    if client is not None and client.is_connected:
+        reset_value = "reset"
+        reset_bytes = reset_value.encode('utf-8')
+        await client.write_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a", reset_bytes)
+        return True
+    return False
 
 # Fungsi sinkron untuk menghubungkan BLE
 @sync_to_async
@@ -57,6 +65,11 @@ def sync_connect_ble():
 @sync_to_async
 def sync_receive_data():
     return asyncio.run(receive_data())
+
+# Fungsi sinkron untuk mereset ESP32 Client
+@sync_to_async
+def sync_reset_esp32():
+    return asyncio.run(reset_esp32())
 
 def push_count(request):
     return render(request, 'push_up_count.html')
@@ -79,6 +92,13 @@ def connect_ble_view(request):
 def get_counter(request):
     data = loop.run_until_complete(sync_receive_data())
     return JsonResponse({'data': data})
+
+@csrf_exempt
+def reset_esp32_view(request):
+    if request.method == 'POST':
+        success = loop.run_until_complete(sync_reset_esp32())
+        return JsonResponse({'status': 'success' if success else 'error', 'message': 'ESP32 reset successfully' if success else 'Failed to reset ESP32'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
 
 # Bagian baca CSV
 # Fungsi untuk membaca isi file CSV

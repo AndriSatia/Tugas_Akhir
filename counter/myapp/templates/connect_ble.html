@@ -22,6 +22,7 @@
     <p id="connectionStatus">Status: Disconnected</p>
     <button class="next-btn" id="nextBtn" onclick="goToMode()">Selanjutnya</button>
     <!-- <button class="next-btn" id="nextBtn" style="display:none;" onclick="goToMode()">Next</button> -->
+    <button class="reset-btn" id="resetBtn" onclick="resetESP32()">Reset</button> <!-- Tombol Reset -->
   </div>
 
   <script>
@@ -49,7 +50,25 @@
     }
 
     function goToMode() {
-      window.location.href = '/mode'; // Redirect ke halaman home
+      window.location.href = '/mode'; // Redirect ke halaman mode
+    }
+
+    function resetESP32() {
+      $.ajax({
+        url: '/reset_esp32/',
+        type: 'POST',
+        success: function (data) {
+          if (data.status === 'success') {
+            alert('ESP32 reset successfully');
+          } else {
+            alert('Failed to reset ESP32');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error:', error);
+          alert('Error resetting ESP32');
+        }
+      });
     }
   </script>
 </body>
