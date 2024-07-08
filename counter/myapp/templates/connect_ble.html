@@ -17,12 +17,25 @@
     <h1>Counter Push-Up dan Sit-Up berbasis Sensor</h1>
   </div>
   <div class="container">
+    <div class="dropdown top-right">
+      <button class="dropbtn">⋮</button>
+      <div class="dropdown-content">
+        <button class="reset-btn" id="resetBtn" onclick="showResetModal()">Reset</button>
+      </div>
+    </div>
+    <div id="resetModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeResetModal()">&times;</span>
+        <p>Apakah Anda yakin ingin mereset alat?</p>
+        <button onclick="resetESP32()">Ya, Reset</button>
+        <button onclick="closeResetModal()">Batal</button>
+      </div>
+    </div>
+
     <h2>Koneksi Bluetooth</h2>
     <button class="connect-btn" onclick="connectBLE()">Hubungkan</button>
     <p id="connectionStatus">Status: Disconnected</p>
     <button class="next-btn" id="nextBtn" onclick="goToMode()">Selanjutnya</button>
-    <!-- <button class="next-btn" id="nextBtn" style="display:none;" onclick="goToMode()">Next</button> -->
-    <button class="reset-btn" id="resetBtn" onclick="resetESP32()">Reset</button> <!-- Tombol Reset -->
   </div>
 
   <script>
@@ -53,6 +66,14 @@
       window.location.href = '/mode'; // Redirect ke halaman mode
     }
 
+    function showResetModal() {
+      $('#resetModal').show();
+    }
+
+    function closeResetModal() {
+      $('#resetModal').hide();
+    }
+
     function resetESP32() {
       $.ajax({
         url: '/reset_esp32/',
@@ -60,6 +81,7 @@
         success: function (data) {
           if (data.status === 'success') {
             alert('ESP32 reset successfully');
+            closeResetModal();
           } else {
             alert('Failed to reset ESP32');
           }
@@ -70,6 +92,13 @@
         }
       });
     }
+
+    // Untuk menutup modal saat klik di luar modal
+    $(window).on('click', function (event) {
+      if (event.target.id == 'resetModal') {
+        closeResetModal();
+      }
+    });
   </script>
 </body>
 
