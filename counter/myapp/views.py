@@ -18,7 +18,7 @@ wrong = 0
 async def connect_ble():
     global client
     if client is None:
-        client = BleakClient("D4:8A:FC:60:81:2E")
+        client = BleakClient("34:B7:DA:F8:88:FA")
         await client.connect()
     return client.is_connected
 
