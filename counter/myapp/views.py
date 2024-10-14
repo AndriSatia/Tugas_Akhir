@@ -15,17 +15,21 @@ loop = asyncio.get_event_loop()
 counter = 0  # Counter untuk menyimpan jumlah data "True" yang diterima
 wrong = 0
 
+# Fungsi asynchronous untuk menghubungkan BLE
 async def connect_ble():
+    # Menghubungkan ke BLE device dengan alamat "34:B7:DA:F8:88:FA"
     global client
     if client is None:
-        client = BleakClient("34:B7:DA:F8:88:FA")
+        client = BleakClient("34:B7:DA:F8:88:FA") # Sesuiakan dengan ESP32 Server yang Anda gunakan
         await client.connect()
     return client.is_connected
 
+# Fungsi asynchronous untuk menerima data dari BLE
 async def receive_data():
+    # Menerima data dari BLE dan mengirimkan feedback ke ESP32
     global client, counter, wrong
     if client is not None and client.is_connected:
-        value = await client.read_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a")
+        value = await client.read_gatt_char("1d5616fb-de0a-4354-b680-d291333dc25a") # Sesuaikan dengan Char UUID yang sudah di atur di ESP32 Server
         if value:
             received_data = value.decode()
             if received_data == "1":
@@ -47,7 +51,9 @@ async def receive_data():
                 return 2
     return 0
 
+# Fungsi asynchronous untuk mereset ESP32 Client
 async def reset_esp32():
+    # Mereset ESP32 Client dengan mengirimkan perintah "reset"
     global client
     if client is not None and client.is_connected:
         reset_value = "reset"
@@ -71,6 +77,7 @@ def sync_receive_data():
 def sync_reset_esp32():
     return asyncio.run(reset_esp32())
 
+# Django views
 def push_count(request):
     return render(request, 'push_up_count.html')
 
@@ -90,6 +97,7 @@ def connect_ble_view(request):
     return JsonResponse({'connected': connected})  # Tampilkan status koneksi sebagai JSON
 
 def get_counter(request):
+    # Mengambil data counter dari BLE
     data = loop.run_until_complete(sync_receive_data())
     return JsonResponse({'data': data})
 
@@ -154,6 +162,7 @@ def clear_csv(request):
 def history(request):
     return render(request, 'history.html')
 
+# Fungsi untuk membaca isi file CSV
 def data_csv(request):
     df = read_csv()
     data = df.to_dict('records')  # Mengonversi DataFrame menjadi daftar objek Python
